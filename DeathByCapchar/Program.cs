@@ -21,7 +21,7 @@ using java.sql;
 
 namespace DeathByCapchar
 {
-    class Program
+    public static class Program
     {
         public static byte[] ImageToByteArray(System.Drawing.Image imageIn)
         {
@@ -50,7 +50,7 @@ namespace DeathByCapchar
         }
         static void Main(string[] args)
         {
-            Client client = new Client("Huynhnx93", "Nguyenhuynh1993");
+            Client client = new Client("User", "Password");
             try
             {
                 ChromeOptions options = new ChromeOptions();
@@ -76,15 +76,21 @@ namespace DeathByCapchar
                     string res = string.Empty;
                     int logintime = 0;
                     bool isGetDone = false;
+                    Task<Server> x = client.ServerStatus();
+                    if (x.IsCompleted == false)
+                    {
+                        return;
+                    }
                     while (logintime <4)
                     {
+                        logintime++;
                         var captcha = client.Decode(bytearr, 30);
                         if (null != captcha && captcha.IsCompleted)
                         {
                             /* The CAPTCHA was solved; captcha.id property holds its numeric ID,
                                and captcha.text holds its text. */
                             //                       Console.WriteLine("CAPTCHA " + captcha.id + " solved: " + captcha.text);
-                            logintime++;
+                            
                             // Type user name and password
                             userNameField.SendKeys("0962809194");
                             userPasswordField.SendKeys("Son0972301962");
